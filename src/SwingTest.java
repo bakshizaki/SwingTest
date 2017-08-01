@@ -38,15 +38,17 @@ import javax.swing.JTree;
 import javax.swing.SwingConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-public class SwingTest {
+public class SwingTest extends MouseAdapter {
 	
 	static JMenuBar mb;    
 	static JMenu file, fbd, help;    
 	static JMenuItem open, exit, selectFBD, about;
 	static JLabel lImage;
+	static JFrame f;
+	public static Draw object=new Draw();
 
 	public static void main(String[] args) {
-		JFrame f = new JFrame("eGuru");
+		 f= new JFrame("eGuru");
 		
 		open=new JMenuItem("Open File");    
 		open.addActionListener(new ActionListener() {
@@ -106,16 +108,31 @@ public class SwingTest {
 		JLabel lcoordinates = new JLabel();
 //		lcoordinates.setLocation(480, 520);
 		lcoordinates.setBounds(350, 480, 100, 20);
-		lcoordinates.setText("Coordinates: ");
+		lcoordinates.setText("Coordinates: "+x+y);
 		
+		f.add(object);
+		object.addMouseListener(new Mousee());
 		f.add(mb);
 		f.add(lImage);
+		lImage.addMouseListener(new Mousee());
 		f.add(lcoordinates);
 		f.setSize(800, 550);
 		f.setLayout(null);
 		f.setVisible(true);
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
+	}
+	
+	static int x;
+	 static int y;
+	static class Mousee extends MouseAdapter{
+	public void mouseClicked(MouseEvent e){
+		x= e.getX();
+		y=e.getY();
+		System.out.println("Xcord:   "+x+ "  Ycord:  "+ y);
+		
+		object.drawing(x, y);
+	}
 	}
 	
 	public static BufferedImage imageResizing(BufferedImage img, int width, int height) {
